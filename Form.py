@@ -1,9 +1,9 @@
 # encoding: utf-8
 
 """
-binary butterfly common
-Copyright (c) 2017 - 2021, binary butterfly GmbH
-All rights reserved.
+binary butterfly validator
+Copyright (c) 2021, binary butterfly GmbH
+Use of this source code is governed by an MIT-style license that can be found in the LICENSE.txt.
 """
 
 from typing import List
@@ -26,7 +26,7 @@ class Form:
 
         # second: init fields
         for field_name in dir(self):
-            if field_name in ['errors', 'has_errors', 'out']:
+            if field_name in ['errors', 'has_errors', 'out', 'data']:
                 continue
             if isinstance(getattr(self, field_name), Field):
                 self._fields[field_name] = getattr(self, field_name)
@@ -58,6 +58,14 @@ class Form:
         if not self._validated:
             raise NotValidated()
         return self._errors
+
+    @property
+    def data(self):
+        if not self._validated:
+            raise NotValidated()
+        if self.has_errors:
+            raise InvalidData()
+        return {field_name: field.data for field_name, field in self._fields.items()}
 
     @property
     def out(self):

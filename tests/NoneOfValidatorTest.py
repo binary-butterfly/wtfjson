@@ -7,32 +7,36 @@ Use of this source code is governed by an MIT-style license that can be found in
 """
 
 
-
 from unittest import TestCase
 from Form import Form
-from fields import StringField, ListField
+from fields import StringField
+from validators import NoneOf
 
 
-class StringListForm(Form):
-    test_field = ListField(StringField())
+class EnumForm(Form):
+    test_field = StringField(
+        validators=[
+            NoneOf(['cookie'])
+        ]
+    )
 
 
-class ListTest(TestCase):
+class NoneOfValidatorTest(TestCase):
     def test_success(self):
-        form = StringListForm(data={'test_field': ['keks', 'lecker']})
+        form = EnumForm(data={'test_field': 'chocolate'})
         assert form.validate() is True
         assert form.has_errors is False
         assert form.errors == {}
-        assert form.out == {'test_field': ['keks', 'lecker']}
+        assert form.out == {'test_field': 'chocolate'}
 
-    def test_no_list(self):
-        form = StringListForm(data={'test_field': 'nanana'})
+    def test_invalid_type(self):
+        form = EnumForm(data={'test_field': 12})
         assert form.validate() is False
         assert form.has_errors is True
         assert form.errors == {'test_field': ['invalid type']}
 
-    def test_wrong_list_entry(self):
-        form = StringListForm(data={'test_field': ['keks', 123]})
+    def test_invalid_value(self):
+        form = EnumForm(data={'test_field': 'cookie'})
         assert form.validate() is False
         assert form.has_errors is True
-        assert form.errors == {'test_field.1': ['invalid type']}
+        assert form.errors == {'test_field': ['is in none-of list']}

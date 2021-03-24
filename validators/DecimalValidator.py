@@ -1,11 +1,12 @@
 # encoding: utf-8
 
 """
-binary butterfly common
-Copyright (c) 2017 - 2021, binary butterfly GmbH
-All rights reserved.
+binary butterfly validator
+Copyright (c) 2021, binary butterfly GmbH
+Use of this source code is governed by an MIT-style license that can be found in the LICENSE.txt.
 """
 
+from typing import Any
 from decimal import Decimal, InvalidOperation
 from . import Validator
 from exceptions import ValidationError
@@ -16,8 +17,8 @@ from fields import Field
 class DecimalValidator(Validator):
     default_message = 'invalid decimal'
 
-    def __call__(self, form: Form, field: Field):
+    def __call__(self, value: Any, form: Form, field: Field):
         try:
-            field.data = Decimal(field.data)
+            field.data_processed = Decimal(value)
         except InvalidOperation:
             raise ValidationError(self.message)

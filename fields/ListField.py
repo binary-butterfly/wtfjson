@@ -1,9 +1,9 @@
 # encoding: utf-8
 
 """
-binary butterfly common
-Copyright (c) 2017 - 2021, binary butterfly GmbH
-All rights reserved.
+binary butterfly validator
+Copyright (c) 2021, binary butterfly GmbH
+Use of this source code is governed by an MIT-style license that can be found in the LICENSE.txt.
 """
 
 from copy import deepcopy
@@ -20,7 +20,7 @@ class ListField(Field):
         super().__init__()
         assert min_entries >= 0
         assert max_entries is None or max_entries >= min_entries
-        self.default_validators = [
+        self.pre_validators = [
             Type(data_type=list),
             ListLength(min_entries, max_entries)
         ]
@@ -28,10 +28,10 @@ class ListField(Field):
 
     def process_in(self, data_raw: Any):
         super().process_in(data_raw)
-        if type(self._data) is not list:
+        if self.validation_stopped:
             return
         self.entries = []
-        for item in data_raw:
+        for item in self.data_processed:
             entry = deepcopy(self.unbound_field)
             entry.init_form(self._form, '%s.%s' % (self._field_name, len(self.entries)))
             entry.process_in(item)
@@ -39,7 +39,7 @@ class ListField(Field):
 
     def validate(self) -> bool:
         super().validate()
-        if self.entries is unset_value:
+        if self.validation_stopped:
             return not self.has_errors
         for entry in self.entries:
             entry.validate()

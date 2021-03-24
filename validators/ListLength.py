@@ -1,12 +1,12 @@
 # encoding: utf-8
 
 """
-binary butterfly common
-Copyright (c) 2017 - 2021, binary butterfly GmbH
-All rights reserved.
+binary butterfly validator
+Copyright (c) 2021, binary butterfly GmbH
+Use of this source code is governed by an MIT-style license that can be found in the LICENSE.txt.
 """
 
-from typing import Optional
+from typing import Optional, Any
 import Form
 from fields import Field
 from validators import Validator
@@ -24,6 +24,8 @@ class ListLength(Validator):
         self.min_entries = min_entries
         self.max_entries = max_entries
 
-    def __call__(self, form: Form, field: Field):
-        if len(field.data) < self.min_entries or (self.max_entries is not None and len(field.data) < self.max_entries):
+    def __call__(self, value: Any, form: Form, field: Field):
+        if type(value) is not list \
+                or len(value) < self.min_entries \
+                or (self.max_entries is not None and len(field.data) < self.max_entries):
             raise ValidationError(self.message)

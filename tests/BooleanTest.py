@@ -6,27 +6,25 @@ Copyright (c) 2021, binary butterfly GmbH
 Use of this source code is governed by an MIT-style license that can be found in the LICENSE.txt.
 """
 
-
-
 from unittest import TestCase
-from Form import Form
-from fields import BooleanField
+from wtfjson import DictInput
+from wtfjson.fields import BooleanField
 
 
-class BooleanForm(Form):
+class BooleanDictInput(DictInput):
     test_field = BooleanField()
 
 
 class BooleanTest(TestCase):
     def test_success(self):
-        form = BooleanForm(data={'test_field': False})
+        form = BooleanDictInput(data={'test_field': False})
         assert form.validate() is True
         assert form.has_errors is False
         assert form.errors == {}
         assert form.out == {'test_field': False}
 
     def test_invalid(self):
-        form = BooleanForm(data={'test_field': 1})
+        form = BooleanDictInput(data={'test_field': 1})
         assert form.validate() is False
         assert form.has_errors is True
         assert form.errors == {'test_field': ['invalid type']}

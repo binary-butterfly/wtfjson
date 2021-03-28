@@ -1,7 +1,13 @@
-.idea/
-.vscode/
+/.idea/
+/.vscode/
 
 __pycache__/
 *.py[cod]
-.pip/
-venv
+
+/.pip
+/venv
+/.tox
+/.eggs
+/build
+/dist
+/src/wtfjson.egg-info

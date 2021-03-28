@@ -6,14 +6,13 @@ Copyright (c) 2021, binary butterfly GmbH
 Use of this source code is governed by an MIT-style license that can be found in the LICENSE.txt.
 """
 
-
 from unittest import TestCase
-from Form import Form
-from fields import StringField
-from validators import URL
+from wtfjson import DictInput
+from wtfjson.fields import StringField
+from wtfjson.validators import URL
 
 
-class URLForm(Form):
+class URLDictInput(DictInput):
     test_field = StringField(
         validators=[
             URL()
@@ -21,7 +20,7 @@ class URLForm(Form):
     )
 
 
-class URLNoIPForm(Form):
+class URLNoIPDictInput(DictInput):
     test_field = StringField(
         validators=[
             URL(allow_ip=False)
@@ -29,7 +28,7 @@ class URLNoIPForm(Form):
     )
 
 
-class URLNoTldForm(Form):
+class URLNoTldDictInput(DictInput):
     test_field = StringField(
         validators=[
             URL(require_tld=False)
@@ -39,40 +38,40 @@ class URLNoTldForm(Form):
 
 class URLValidatorTest(TestCase):
     def test_success(self):
-        form = URLForm(data={'test_field': 'https://binary-butterfly.de'})
+        form = URLDictInput(data={'test_field': 'https://binary-butterfly.de'})
         assert form.validate() is True
         assert form.has_errors is False
         assert form.errors == {}
         assert form.out == {'test_field': 'https://binary-butterfly.de'}
 
     def test_invalid(self):
-        form = URLForm(data={'test_field': 'keks'})
+        form = URLDictInput(data={'test_field': 'keks'})
         assert form.validate() is False
         assert form.has_errors is True
         assert form.errors == {'test_field': ['invalid url']}
 
     def test_valid_ip(self):
-        form = URLForm(data={'test_field': 'http://10.10.10.10'})
+        form = URLDictInput(data={'test_field': 'http://10.10.10.10'})
         assert form.validate() is True
         assert form.has_errors is False
         assert form.errors == {}
         assert form.out == {'test_field': 'http://10.10.10.10'}
 
     def test_invalid_ip(self):
-        form = URLNoIPForm(data={'test_field': 'http://10.10.10.10'})
+        form = URLNoIPDictInput(data={'test_field': 'http://10.10.10.10'})
         assert form.validate() is False
         assert form.has_errors is True
         assert form.errors == {'test_field': ['invalid url']}
 
     def test_valid_tld(self):
-        form = URLNoTldForm(data={'test_field': 'http://binary-butterfly'})
+        form = URLNoTldDictInput(data={'test_field': 'http://binary-butterfly'})
         assert form.validate() is True
         assert form.has_errors is False
         assert form.errors == {}
         assert form.out == {'test_field': 'http://binary-butterfly'}
 
     def test_invalid_tld(self):
-        form = URLForm(data={'test_field': 'http://binary-butterfly'})
+        form = URLDictInput(data={'test_field': 'http://binary-butterfly'})
         assert form.validate() is False
         assert form.has_errors is True
         assert form.errors == {'test_field': ['invalid url']}

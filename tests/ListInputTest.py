@@ -7,30 +7,30 @@ Use of this source code is governed by an MIT-style license that can be found in
 """
 
 from unittest import TestCase
-from wtfjson import DictInput
-from wtfjson.fields import StringField, ListField
+from wtfjson import ListInput
+from wtfjson.fields import StringField
 
 
-class StringListDictInput(DictInput):
-    test_field = ListField(StringField())
+class StringListInput(ListInput):
+    field = StringField()
 
 
-class ListTest(TestCase):
+class ListInputTest(TestCase):
     def test_success(self):
-        form = StringListDictInput(data={'test_field': ['keks', 'lecker']})
+        form = StringListInput(['keks', 'lecker'])
         assert form.validate() is True
         assert form.has_errors is False
         assert form.errors == {}
-        assert form.out == {'test_field': ['keks', 'lecker']}
+        assert form.out == ['keks', 'lecker']
 
     def test_no_list(self):
-        form = StringListDictInput(data={'test_field': 'nanana'})
+        form = StringListInput('cookie')
         assert form.validate() is False
         assert form.has_errors is True
-        assert form.errors == {'test_field': ['invalid type']}
+        assert form.errors == {'_root': ['invalid type']}
 
     def test_wrong_list_entry(self):
-        form = StringListDictInput(data={'test_field': ['keks', 123]})
+        form = StringListInput(['keks', 123])
         assert form.validate() is False
         assert form.has_errors is True
-        assert form.errors == {'test_field.1': ['invalid type']}
+        assert form.errors == {'1': ['invalid type']}

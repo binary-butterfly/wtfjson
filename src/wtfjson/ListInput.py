@@ -34,8 +34,7 @@ class ListInput(ABC):
             return
         self._fields = []
         for i in range(0, len(data)):
-            field = deepcopy(self.field)
-            field.init_form(ListInput, str(i))
+            field = self.field.bind(self, str(i))
             field.process_in(data[i])
             self._fields.append(field)
 

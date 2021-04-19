@@ -9,7 +9,7 @@ Use of this source code is governed by an MIT-style license that can be found in
 from abc import ABC
 from typing import List, Any
 
-from .fields import Field
+from .fields import UnboundField
 from .validators import Validator
 from .exceptions import NotValidated, InvalidData
 from .util import unset_value
@@ -31,9 +31,10 @@ class DictInput(ABC):
         for field_name in dir(self):
             if field_name in ['errors', 'has_errors', 'out', 'data']:
                 continue
-            if isinstance(getattr(self, field_name), Field):
-                self._fields[field_name] = getattr(self, field_name)
-                self._fields[field_name].init_form(self, field_name)
+            if isinstance(getattr(self, field_name), UnboundField):
+                unbound_field = getattr(self, field_name)
+                self._fields[field_name] = unbound_field.bind(self, field_name)
+                setattr(self, field_name, self._fields[field_name])
 
         # third: load data
         for field_name, field in self._fields.items():
@@ -83,3 +84,4 @@ class DictInput(ABC):
         if self.has_errors:
             raise InvalidData()
         return {field_name: field.out for field_name, field in self._fields.items() if field.out is not unset_value}
+

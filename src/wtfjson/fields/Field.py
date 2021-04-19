@@ -12,6 +12,7 @@ from copy import deepcopy
 from typing import List, Callable, Optional, Any, Type, TypeVar
 from ..util import unset_value
 from ..exceptions import ValidationError, StopValidation, ClearValidation
+from .UnboundField import UnboundField
 
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
@@ -45,6 +46,8 @@ class Field(ABC):
     required: bool
 
     def __init__(self,
+                 form: 'Form' = None,
+                 field_name: str = None,
                  description: Optional[str] = None,
                  input_filters: Optional[list] = None,
                  output_filters: Optional[list] = None,
@@ -55,11 +58,6 @@ class Field(ABC):
         self.output_filters = output_filters if output_filters is not None else []
         self.validators = validators if validators is not None else []
         self.required = required
-
-    def init_form(self, form: 'Form', field_name):
-        """
-        runs when the form is initialized (usually at an endpoint)
-        """
         self._errors = {}
         self._form = form
         self._field_name = field_name
@@ -68,6 +66,12 @@ class Field(ABC):
         self.data_processed = unset_value
         self.data_out = unset_value
         self.validation_stopped = False
+
+    def __new__(cls, *args, **kwargs):
+        if "form" in kwargs:
+            return super().__new__(cls)
+        else:
+            return UnboundField(cls, *args, **kwargs)
 
     def process_in(self, data_raw: Any):
         """

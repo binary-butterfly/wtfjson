@@ -20,8 +20,8 @@ class ObjectField(Field):
         Type(data_type=dict)
     ]
 
-    def __init__(self, form_class: 'DictInput'):
-        super().__init__()
+    def __init__(self, form_class: 'DictInput', *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.form_class = form_class
 
     def process_in(self, data_raw: Any):

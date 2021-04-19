@@ -7,6 +7,7 @@ Use of this source code is governed by an MIT-style license that can be found in
 """
 
 from .Field import Field
+from .UnboundField import UnboundField
 from .BooleanField import BooleanField
 from .StringField import StringField
 from .IntegerField import IntegerField

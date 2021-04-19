@@ -12,8 +12,8 @@ from ..validators import Type, EnumValidator
 
 class EnumField(Field):
 
-    def __init__(self, enum):
-        super().__init__()
+    def __init__(self, enum, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.default_validators = [
             Type(data_type=str),
             EnumValidator(enum=enum)

@@ -9,7 +9,7 @@ Use of this source code is governed by an MIT-style license that can be found in
 from copy import deepcopy
 from typing import Optional, Any, List
 
-from ..fields import Field
+from ..fields import Field, UnboundField
 from ..validators import Type, ListLength
 from ..util import unset_value
 
@@ -17,8 +17,8 @@ from ..util import unset_value
 class ListField(Field):
     entries: List[Field] = unset_value
 
-    def __init__(self, unbound_field: Field, min_entries: Optional[int] = 0, max_entries: Optional[int] = None):
-        super().__init__()
+    def __init__(self, unbound_field: UnboundField, min_entries: Optional[int] = 0, max_entries: Optional[int] = None, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         assert min_entries >= 0
         assert max_entries is None or max_entries >= min_entries
         self.pre_validators = [
@@ -33,8 +33,7 @@ class ListField(Field):
             return 
         self.entries = []
         for item in self.data_processed:
-            entry = deepcopy(self.unbound_field)
-            entry.init_form(self._form, '%s.%s' % (self._field_name, len(self.entries)))
+            entry = self.unbound_field.bind(self._form, '%s.%s' % (self._field_name, len(self.entries)))
             entry.process_in(item)
             self.entries.append(entry)
 

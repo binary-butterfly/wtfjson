@@ -113,6 +113,9 @@ class Field(ABC):
             self.append_error('data required')
             self.validation_stopped = True
             return not self.has_errors
+        if self.data_processed is unset_value and not self.required:
+            self.state = FieldState.validated
+            return not self.has_errors
         try:
             for validator in self.default_validators + self.validators:
                 try:

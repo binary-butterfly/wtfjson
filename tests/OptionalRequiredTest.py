@@ -9,11 +9,16 @@ Use of this source code is governed by an MIT-style license that can be found in
 from unittest import TestCase
 from wtfjson import DictInput
 from wtfjson.fields import IntegerField, StringField
-from wtfjson.validators import Length
+from wtfjson.validators import Length, NumberRange
 
 
 class OptionalDictInput(DictInput):
-    test_field = IntegerField(required=False)
+    test_field = IntegerField(
+        required=False,
+        validators=[
+            NumberRange(min=1)
+        ]
+    )
 
 
 class RequiredDictInput(DictInput):
@@ -31,6 +36,19 @@ class OptionalRequiredTest(TestCase):
         assert form.has_errors is False
         assert form.errors == {}
         assert form.out == {}
+
+    def test_optional_data(self):
+        form = OptionalDictInput(data={'test_field': 1})
+        assert form.validate() is True
+        assert form.has_errors is False
+        assert form.errors == {}
+        assert form.out == {'test_field': 1}
+
+    def test_optional_invalid_data(self):
+        form = OptionalDictInput(data={'test_field': 'str'})
+        assert form.validate() is False
+        assert form.has_errors is True
+        print(form.errors)
 
     def test_required_error(self):
         form = RequiredDictInput(data={})

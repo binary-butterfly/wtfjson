@@ -8,7 +8,7 @@ Use of this source code is governed by an MIT-style license that can be found in
 
 from unittest import TestCase
 from wtfjson import DictInput
-from wtfjson.fields import IntegerField, StringField
+from wtfjson.fields import IntegerField, StringField, ListField
 from wtfjson.validators import Length, NumberRange
 
 
@@ -18,6 +18,17 @@ class OptionalDictInput(DictInput):
         validators=[
             NumberRange(min=1)
         ]
+    )
+
+
+class OptionalDictListInput(DictInput):
+    test_field = ListField(
+        StringField(
+            validators=[
+                Length(min=1)
+            ]
+        ),
+        required=False
     )
 
 
@@ -36,6 +47,27 @@ class OptionalRequiredTest(TestCase):
         assert form.has_errors is False
         assert form.errors == {}
         assert form.out == {}
+
+    def test_optional_list(self):
+        form = OptionalDictListInput(data={})
+        assert form.validate() is True
+        assert form.has_errors is False
+        assert form.errors == {}
+        assert form.out == {}
+
+    def test_optional_list_empty_data(self):
+        form = OptionalDictListInput(data={'test_field': []})
+        assert form.validate() is True
+        assert form.has_errors is False
+        assert form.errors == {}
+        assert form.out == {'test_field': []}
+
+    def test_optional_list_data(self):
+        form = OptionalDictListInput(data={'test_field': ['cookie', 'cupcake']})
+        assert form.validate() is True
+        assert form.has_errors is False
+        assert form.errors == {}
+        assert form.out == {'test_field': ['cookie', 'cupcake']}
 
     def test_optional_data(self):
         form = OptionalDictInput(data={'test_field': 1})

@@ -9,7 +9,7 @@ Use of this source code is governed by an MIT-style license that can be found in
 from abc import ABC
 from enum import Enum
 from copy import deepcopy
-from typing import List, Callable, Optional, Any, Type, TypeVar
+from typing import List, Callable, Optional, Any
 from ..util import unset_value
 from ..exceptions import ValidationError, StopValidation, ClearValidation
 from .UnboundField import UnboundField

@@ -7,7 +7,7 @@ Use of this source code is governed by an MIT-style license that can be found in
 """
 
 from abc import ABC
-from typing import List, Any
+from typing import List, Any, Optional
 
 from .fields import UnboundField
 from .validators import Validator
@@ -48,14 +48,15 @@ class DictInput(ABC):
         self._validated = True
         return not self.has_errors
 
-    def populate_obj(self, obj):
+    def populate_obj(self, obj, exclude: Optional[List[str]] = None):
         if not self._validated:
             raise NotValidated()
         if self.has_errors:
             raise InvalidData()
         for field_name, field in self._fields.items():
-            if field.out is not unset_value:
-                setattr(obj, field_name, field.out)
+            if field_name in exclude:
+                if field.out is not unset_value:
+                    setattr(obj, field_name, field.out)
 
     @property
     def has_errors(self) -> bool:

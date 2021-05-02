@@ -6,9 +6,9 @@ Copyright (c) 2021, binary butterfly GmbH
 Use of this source code is governed by an MIT-style license that can be found in the LICENSE.txt.
 """
 
-from copy import deepcopy
 from typing import Optional, Any, List
 
+from .Field import FieldState
 from ..fields import Field, UnboundField
 from ..validators import Type, ListLength
 from ..util import unset_value
@@ -17,7 +17,12 @@ from ..util import unset_value
 class ListField(Field):
     entries: List[Field] = unset_value
 
-    def __init__(self, unbound_field: UnboundField, min_entries: Optional[int] = 0, max_entries: Optional[int] = None, *args, **kwargs):
+    def __init__(self,
+                 unbound_field: UnboundField,
+                 min_entries: Optional[int] = 0,
+                 max_entries: Optional[int] = None,
+                 *args,
+                 **kwargs):
         super().__init__(*args, **kwargs)
         assert min_entries >= 0
         assert max_entries is None or max_entries >= min_entries
@@ -39,6 +44,9 @@ class ListField(Field):
 
     def validate(self) -> bool:
         super().validate()
+        if self.data_processed is unset_value and not self.required:
+            self.state = FieldState.validated
+            return not self.has_errors
         if self.validation_stopped:
             return not self.has_errors
         for entry in self.entries:

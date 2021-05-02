@@ -11,7 +11,9 @@ from ..validators import Type, DateTime
 
 
 class DateTimeField(Field):
-    pre_validators = [
-        Type(data_type=str),
-        DateTime()
-    ]
+    def __init__(self, localized: bool = False, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.pre_validators = [
+            Type(data_type=str),
+            DateTime(localized=localized)
+        ]

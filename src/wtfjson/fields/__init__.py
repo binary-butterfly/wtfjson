@@ -17,3 +17,4 @@ from .ListField import ListField
 from .ObjectField import ObjectField
 from .DateField import DateField
 from .DateTimeField import DateTimeField
+from .FloatField import FloatField

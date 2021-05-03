@@ -54,7 +54,7 @@ class DictInput(ABC):
         if self.has_errors:
             raise InvalidData()
         for field_name, field in self._fields.items():
-            if field_name in exclude:
+            if exclude is None or field_name not in exclude:
                 if field.out is not unset_value:
                     setattr(obj, field_name, field.out)
 

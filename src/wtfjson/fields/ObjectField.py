@@ -44,4 +44,11 @@ class ObjectField(Field):
 
     @property
     def out(self):
-        return unset_value if self._obj is unset_value else self._obj.out
+        if self.data_out is not unset_value:
+            return self.data_out
+        if self._obj is unset_value:
+            return unset_value
+        self.data_out = self._obj.out
+        for output_filter in self.default_input_filters + self.output_filters:
+            self.data_out = output_filter(self.data_out)
+        return self.data_out

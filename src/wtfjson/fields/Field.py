@@ -158,7 +158,7 @@ class Field(ABC):
         """
         out is quite the same as data, but after output filters and without custom objects in case of dicts.
         """
-        if self.data_out is not unset_value:
+        if self.data_out is not unset_value or self.data is unset_value:
             return self.data_out
         self.data_out = self.data
         for output_filter in self.default_input_filters + self.output_filters:

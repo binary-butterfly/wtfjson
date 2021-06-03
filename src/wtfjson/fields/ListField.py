@@ -6,12 +6,12 @@ Copyright (c) 2021, binary butterfly GmbH
 Use of this source code is governed by an MIT-style license that can be found in the LICENSE.txt.
 """
 
-from typing import Optional, Any, List
+from typing import Optional, Any, List, Union
 
 from .Field import FieldState
 from ..fields import Field, UnboundField
 from ..validators import Type, ListLength
-from ..util import unset_value
+from ..util import unset_value, UnsetValue
 
 
 class ListField(Field):
@@ -64,11 +64,11 @@ class ListField(Field):
         return self.entries[index]
 
     @property
-    def data(self):
+    def data(self) -> Union[list, UnsetValue]:
         return unset_value if self.entries is unset_value else [f.data for f in self.entries]
 
     @property
-    def out(self):
+    def out(self) -> Union[list, UnsetValue]:
         if self.entries is unset_value:
             return unset_value
         if self.data_out is not unset_value:

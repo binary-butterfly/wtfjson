@@ -6,10 +6,10 @@ Copyright (c) 2021, binary butterfly GmbH
 Use of this source code is governed by an MIT-style license that can be found in the LICENSE.txt.
 """
 
-from typing import Any, TYPE_CHECKING
+from typing import Any, Union, TYPE_CHECKING
 from ..fields import Field
 from ..validators import Type
-from ..util import unset_value
+from ..util import unset_value, UnsetValue
 if TYPE_CHECKING:
     from ..DictInput import DictInput
 
@@ -39,11 +39,11 @@ class ObjectField(Field):
         return not self.has_errors
 
     @property
-    def data(self):
+    def data(self) -> Union[dict, UnsetValue]:
         return unset_value if self._obj is unset_value else self._obj.data
 
     @property
-    def out(self):
+    def out(self) -> Union[dict, UnsetValue]:
         if self.data_out is not unset_value:
             return self.data_out
         if self._obj is unset_value:

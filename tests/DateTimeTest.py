@@ -28,6 +28,13 @@ class DateTimeTest(TestCase):
         assert form.errors == {}
         assert form.out == {'test_field': datetime(2020, 10, 1, 10, 10, 12)}
 
+    def test_success_with_z(self):
+        form = DateDictInput(data={'test_field': '2020-10-01T10:10:12Z'})
+        assert form.validate() is True
+        assert form.has_errors is False
+        assert form.errors == {}
+        assert form.out == {'test_field': datetime(2020, 10, 1, 10, 10, 12)}
+
     def test_localized_success(self):
         form = LocalizedDateDictInput(data={'test_field': '2020-10-01T10:10:12'})
         assert form.validate() is True

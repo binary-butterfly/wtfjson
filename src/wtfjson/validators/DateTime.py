@@ -20,12 +20,15 @@ if TYPE_CHECKING:
 class DateTime(Validator):
     default_message = 'invalid datetime'
 
-    def __init__(self, localized: bool = False, *args, **kwargs):
+    def __init__(self, localized: bool = False, accept_utc=True, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.localized = localized
+        self.accept_utc = accept_utc
 
     def __call__(self, value: str, form: Union['DictInput', 'ListInput'], field: Field):
         if not self.localized:
+            if self.accept_utc and value[-1] == 'Z':
+                value = value[:-1]
             if len(value) != 19:
                 raise ValidationError(self.default_message)
             try:

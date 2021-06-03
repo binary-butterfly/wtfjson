@@ -8,6 +8,7 @@ Use of this source code is governed by an MIT-style license that can be found in
 
 from datetime import datetime, timedelta
 from typing import Any, Optional, Union, TYPE_CHECKING, Callable
+from ..util import unset_value
 
 from ..fields import Field
 from ..validators import Validator
@@ -35,6 +36,8 @@ class DateTimeRange(Validator):
         self.orientation = orientation
 
     def __call__(self, value: Any, form: Union['DictInput', 'ListInput'], field: Field):
+        if value is unset_value:
+            return
         if self.orientation is None:
             min = (datetime.utcnow() + self.minus) if self.minus else None
             max = (datetime.utcnow() + self.plus) if self.plus else None

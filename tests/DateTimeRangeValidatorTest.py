@@ -64,6 +64,13 @@ class AnyOfValidatorTest(TestCase):
         assert form.errors == {}
         assert form.out == {'test_field': datetime(2020, 1, 1, 0, 0, 0)}
 
+    def test_success_fixed_with_z(self):
+        form = DateTimeRangeFixedInput(data={'test_field': '2020-01-01T00:00:00Z'})
+        assert form.validate() is True
+        assert form.has_errors is False
+        assert form.errors == {}
+        assert form.out == {'test_field': datetime(2020, 1, 1, 0, 0, 0)}
+
     def test_invalid_value_min_fixed(self):
         form = DateTimeRangeFixedInput(data={'test_field': '2020-01-01T00:10:00'})
         assert form.validate() is False

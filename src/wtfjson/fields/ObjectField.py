@@ -39,6 +39,10 @@ class ObjectField(Field):
         return not self.has_errors
 
     @property
+    def fields(self):
+        return self._obj
+
+    @property
     def data(self) -> Union[dict, UnsetValue]:
         return unset_value if self._obj is unset_value else self._obj.data
 

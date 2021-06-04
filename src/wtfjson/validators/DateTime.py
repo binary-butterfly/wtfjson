@@ -20,7 +20,7 @@ if TYPE_CHECKING:
 class DateTime(Validator):
     default_message = 'invalid datetime'
 
-    def __init__(self, localized: bool = False, accept_utc=True, *args, **kwargs):
+    def __init__(self, localized: bool = False, accept_utc=False, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.localized = localized
         self.accept_utc = accept_utc

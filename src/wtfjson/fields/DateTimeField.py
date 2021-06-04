@@ -14,11 +14,11 @@ from ..util import UnsetValue
 
 
 class DateTimeField(Field):
-    def __init__(self, localized: bool = False, *args, **kwargs):
+    def __init__(self, localized: bool = False, accept_utc=False, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.pre_validators = [
             Type(data_type=str),
-            DateTime(localized=localized)
+            DateTime(localized=localized, accept_utc=accept_utc)
         ]
 
     @property

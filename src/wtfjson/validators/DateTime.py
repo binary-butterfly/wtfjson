@@ -27,8 +27,6 @@ class DateTime(Validator):
         self.accept_utc = accept_utc
 
     def __call__(self, value: str, form: Union['DictInput', 'ListInput'], field: Field):
-        if value == unset_value:
-            return
         if not self.localized:
             if self.accept_utc and value[-1] == 'Z':
                 value = value[:-1]
@@ -45,7 +43,10 @@ class DateTime(Validator):
             if value[-1] == 'Z':
                 value = value[:-1]
             try:
-                field.data_processed = datetime.fromisoformat(value).replace(tzinfo=timezone.utc)
+                if len(value) == 19:
+                    field.data_processed = datetime.fromisoformat(value).replace(tzinfo=timezone.utc)
+                else:
+                    field.data_processed = datetime.fromisoformat(value)
             except ValueError:
                 raise ValidationError(self.message)
             return

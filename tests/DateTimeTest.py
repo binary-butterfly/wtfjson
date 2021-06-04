@@ -16,6 +16,10 @@ class DateDictInput(DictInput):
     test_field = DateTimeField()
 
 
+class DateDictInputWithZ(DictInput):
+    test_field = DateTimeField(accept_utc=True)
+
+
 class LocalizedDateDictInput(DictInput):
     test_field = DateTimeField(localized=True)
 
@@ -29,11 +33,18 @@ class DateTimeTest(TestCase):
         assert form.out == {'test_field': datetime(2020, 10, 1, 10, 10, 12)}
 
     def test_success_with_z(self):
-        form = DateDictInput(data={'test_field': '2020-10-01T10:10:12Z'})
+        form = DateDictInputWithZ(data={'test_field': '2020-10-01T10:10:12Z'})
         assert form.validate() is True
         assert form.has_errors is False
         assert form.errors == {}
         assert form.out == {'test_field': datetime(2020, 10, 1, 10, 10, 12)}
+
+    def test_fail_with_z(self):
+        form = DateDictInput(data={'test_field': '2020-10-01T10:10:12Z'})
+        assert form.validate() is False
+        assert form.has_errors is True
+        print(form.errors)
+        assert form.errors == {'test_field': ['invalid datetime']}
 
     def test_localized_success(self):
         form = LocalizedDateDictInput(data={'test_field': '2020-10-01T10:10:12'})

@@ -17,6 +17,7 @@ from wtfjson.validators import DateTimeRange
 
 class DateTimeRangeFixedInput(DictInput):
     test_field = DateTimeField(
+        accept_utc=True,
         validators=[
             DateTimeRange(
                 minus=timedelta(minutes=-5),

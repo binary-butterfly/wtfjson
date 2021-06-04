@@ -36,7 +36,7 @@ class DateTimeRange(Validator):
         self.orientation = orientation
 
     def __call__(self, value: Any, form: Union['DictInput', 'ListInput'], field: Field):
-        if value is unset_value:
+        if value == unset_value:
             return
         if self.orientation is None:
             min = (datetime.utcnow() + self.minus) if self.minus else None

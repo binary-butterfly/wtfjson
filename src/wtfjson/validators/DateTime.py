@@ -12,6 +12,7 @@ from datetime import datetime, timezone
 from ..fields import Field
 from ..validators import Validator
 from ..exceptions import ValidationError
+from ..util import unset_value
 if TYPE_CHECKING:
     from ..DictInput import DictInput
     from ..ListInput import ListInput
@@ -26,6 +27,8 @@ class DateTime(Validator):
         self.accept_utc = accept_utc
 
     def __call__(self, value: str, form: Union['DictInput', 'ListInput'], field: Field):
+        if value == unset_value:
+            return
         if not self.localized:
             if self.accept_utc and value[-1] == 'Z':
                 value = value[:-1]

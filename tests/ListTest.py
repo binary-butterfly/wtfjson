@@ -7,12 +7,16 @@ Use of this source code is governed by an MIT-style license that can be found in
 """
 
 from unittest import TestCase
-from wtfjson import DictInput
+from wtfjson import DictInput, ListInput
 from wtfjson.fields import StringField, ListField
 
 
 class StringListDictInput(DictInput):
     test_field = ListField(StringField())
+
+
+class ListInListDictInput(DictInput):
+    test_field = ListField(ListField(StringField()))
 
 
 class ListTest(TestCase):
@@ -34,3 +38,10 @@ class ListTest(TestCase):
         assert form.validate() is False
         assert form.has_errors is True
         assert form.errors == {'test_field.1': ['invalid type']}
+
+    def test_list_in_list(self):
+        form = ListInListDictInput(data={'test_field': [['cookie', 'banana'], ['cake', 'strawberry']]})
+        assert form.validate() is True
+        assert form.has_errors is False
+        assert form.errors == {}
+        assert form.out == {'test_field': [['cookie', 'banana'], ['cake', 'strawberry']]}

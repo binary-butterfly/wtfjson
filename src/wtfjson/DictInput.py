@@ -56,7 +56,7 @@ class DictInput(ABC):
         for field_name, field in self._fields.items():
             if exclude is None or field_name not in exclude:
                 if field.out is not unset_value:
-                    setattr(obj, field_name, field.out)
+                    setattr(obj, field.populate_to if field.populate_to else field_name, field.out)
 
     @property
     def has_errors(self) -> bool:

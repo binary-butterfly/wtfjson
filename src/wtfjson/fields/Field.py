@@ -52,12 +52,15 @@ class Field(ABC):
                  input_filters: Optional[list] = None,
                  output_filters: Optional[list] = None,
                  validators: Optional[list] = None,
-                 required: bool = True):
+                 required: bool = True,
+                 populate_to: Optional[str] = None):
         self.description = description
         self.input_filters = input_filters if input_filters is not None else []
         self.output_filters = output_filters if output_filters is not None else []
         self.validators = validators if validators is not None else []
         self.required = required
+        self.populate_to = populate_to
+
         self._errors = {}
         self._form = form
         self._field_name = field_name

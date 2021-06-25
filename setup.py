@@ -31,12 +31,12 @@ def read(*names, **kwargs):
 
 setup(
     name='wtfjson',
-    version='0.1.0',
+    version='0.2.0',
     license='MIT',
     description='',
     author='binary butterfly GmbH',
-    author_email='contact@ionelmc.ro',
-    url='https://github.com/ionelmc/python-nameless',
+    author_email='ernesto.ruge@binary-butterfly.de',
+    url='https://github.com/binary-butterfly/wtfjson',
     packages=find_packages('src'),
     package_dir={'': 'src'},
     py_modules=[splitext(basename(path))[0] for path in glob('src/*.py')],
@@ -51,7 +51,6 @@ setup(
         'Operating System :: Microsoft :: Windows',
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
@@ -63,7 +62,7 @@ setup(
         'Issue Tracker': 'https://github.com/binary-butterfly/wtfjson/issues',
     },
     keywords=[],
-    python_requires='>=3.6',
+    python_requires='>=3.7',
     install_requires=[
         'email-validator'
     ],

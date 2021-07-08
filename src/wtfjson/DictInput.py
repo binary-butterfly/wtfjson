@@ -58,6 +58,11 @@ class DictInput(ABC):
                 if field.out is not unset_value:
                     setattr(obj, field.populate_to if field.populate_to else field_name, field.out)
 
+    def to_dataclass(self, dataclass):
+        if hasattr(dataclass, 'from_dict'):
+            return dataclass.from_dict(**self.out)
+        return dataclass(**self.out)
+
     @property
     def has_errors(self) -> bool:
         if not self._validated:

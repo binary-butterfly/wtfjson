@@ -17,30 +17,34 @@ class PopulateDictInput(DictInput):
     test_field = StringField()
 
 
-class RenamePopulateDictInput(DictInput):
-    test_field_renamed = StringField(populate_to='test_field')
+@dataclass
+class TestClass:
+    test_field: str
 
 
 @dataclass
-class TestClass:
-    test_field: Optional[str] = None
+class TestClassFrom:
+    @classmethod
+    def from_dict(cls, **data):
+        data['test_field'] += 's'
+        return cls(**data)
+
+    test_field: str
 
 
-class PopulateToTest(TestCase):
+class BooleanTest(TestCase):
     def test_success(self):
         form = PopulateDictInput(data={'test_field': 'cookie'})
         assert form.validate() is True
         assert form.has_errors is False
         assert form.errors == {}
-        test_class = TestClass()
-        form.populate_obj(test_class)
+        test_class = form.to_dataclass(TestClass)
         assert test_class.test_field == 'cookie'
 
-    def test_success_rename(self):
-        form = RenamePopulateDictInput(data={'test_field_renamed': 'cookie'})
+    def test_success_from(self):
+        form = PopulateDictInput(data={'test_field': 'cookie'})
         assert form.validate() is True
         assert form.has_errors is False
         assert form.errors == {}
-        test_class = TestClass()
-        form.populate_obj(test_class)
-        assert test_class.test_field == 'cookie'
+        test_class = form.to_dataclass(TestClassFrom)
+        assert test_class.test_field == 'cookies'

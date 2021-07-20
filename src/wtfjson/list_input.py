@@ -6,7 +6,6 @@ Copyright (c) 2021, binary butterfly GmbH
 Use of this source code is governed by an MIT-style license that can be found in the LICENSE.txt.
 """
 
-from copy import deepcopy
 from typing import Any
 from abc import ABC, abstractmethod
 

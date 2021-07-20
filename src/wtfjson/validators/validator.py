@@ -8,11 +8,12 @@ Use of this source code is governed by an MIT-style license that can be found in
 
 from abc import ABC, abstractmethod
 from typing import Optional, Any, Union, TYPE_CHECKING
+
 from ..fields import Field
 
 if TYPE_CHECKING:
-    from ..DictInput import DictInput
-    from ..ListInput import ListInput
+    from ..dict_input import DictInput
+    from ..list_input import ListInput
 
 
 class Validator(ABC):

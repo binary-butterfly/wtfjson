@@ -8,6 +8,7 @@ Use of this source code is governed by an MIT-style license that can be found in
 
 from typing import Union
 from decimal import Decimal
+
 from ..fields import Field
 from ..validators import Type, DecimalValidator
 from ..util import UnsetValue

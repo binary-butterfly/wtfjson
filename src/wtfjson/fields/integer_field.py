@@ -7,22 +7,21 @@ Use of this source code is governed by an MIT-style license that can be found in
 """
 
 from typing import Union
-from datetime import date
+
 from ..fields import Field
-from ..validators import Type, Date
+from ..validators import Type
 from ..util import UnsetValue
 
 
-class DateField(Field):
+class IntegerField(Field):
     pre_validators = [
-        Type(data_type=str),
-        Date()
+        Type(data_type=int)
     ]
 
     @property
-    def data(self) -> Union[date, UnsetValue]:
+    def data(self) -> Union[int, UnsetValue]:
         return super().data
 
     @property
-    def out(self) -> Union[date, UnsetValue]:
+    def out(self) -> Union[int, UnsetValue]:
         return super().out

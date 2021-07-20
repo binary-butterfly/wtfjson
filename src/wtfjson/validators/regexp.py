@@ -12,9 +12,10 @@ from typing import Any, Optional, Union, Pattern, Match, TYPE_CHECKING
 from ..fields import Field
 from ..validators import Validator
 from ..exceptions import ValidationError
+
 if TYPE_CHECKING:
-    from ..DictInput import DictInput
-    from ..ListInput import ListInput
+    from ..dict_input import DictInput
+    from ..list_input import ListInput
 
 
 class Regexp(Validator):

@@ -6,23 +6,26 @@ Copyright (c) 2021, binary butterfly GmbH
 Use of this source code is governed by an MIT-style license that can be found in the LICENSE.txt.
 """
 
-from typing import Any, Optional, Union, TYPE_CHECKING
+from enum import Enum
+from typing import Optional, Any, Union, TYPE_CHECKING
 
 from ..fields import Field
 from ..validators import Validator
 from ..exceptions import ValidationError
+
 if TYPE_CHECKING:
-    from ..DictInput import DictInput
-    from ..ListInput import ListInput
+    from ..dict_input import DictInput
+    from ..list_input import ListInput
 
 
-class NoneOf(Validator):
-    default_message = 'is in none-of list'  # TODO: better message
+class EnumValidator(Validator):
+    default_message = 'value not in enum'
 
-    def __init__(self, none_of: list, message: Optional[str] = None):
+    def __init__(self, enum: Enum, message: Optional[str] = None):
         super().__init__(message)
-        self.none_of = none_of
+        self.enum = enum
 
     def __call__(self, value: Any, form: Union['DictInput', 'ListInput'], field: Field):
-        if value in self.none_of:
+        if type(field.data_processed) is not str or not hasattr(self.enum, field.data_processed):
             raise ValidationError(self.message)
+        field.data_processed = getattr(self.enum, field.data_processed)

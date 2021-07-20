@@ -6,25 +6,28 @@ Copyright (c) 2021, binary butterfly GmbH
 Use of this source code is governed by an MIT-style license that can be found in the LICENSE.txt.
 """
 
+from enum import Enum
 from typing import Union
-from datetime import datetime
+
 from ..fields import Field
-from ..validators import Type, DateTime
+from ..validators import Type, EnumValidator
 from ..util import UnsetValue
 
 
-class DateTimeField(Field):
-    def __init__(self, localized: bool = False, accept_utc=False, *args, **kwargs):
+class EnumField(Field):
+
+    def __init__(self, enum, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.pre_validators = [
+        self.enum = enum
+        self.default_validators = [
             Type(data_type=str),
-            DateTime(localized=localized, accept_utc=accept_utc)
+            EnumValidator(enum=enum)
         ]
 
     @property
-    def data(self) -> Union[datetime, UnsetValue]:
+    def data(self) -> Union[Enum, UnsetValue]:
         return super().data
 
     @property
-    def out(self) -> Union[datetime, UnsetValue]:
+    def out(self) -> Union[Enum, UnsetValue]:
         return super().out

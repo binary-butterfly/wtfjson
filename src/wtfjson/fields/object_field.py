@@ -7,11 +7,13 @@ Use of this source code is governed by an MIT-style license that can be found in
 """
 
 from typing import Any, Union, TYPE_CHECKING
+
 from ..fields import Field
 from ..validators import Type
 from ..util import unset_value, UnsetValue
+
 if TYPE_CHECKING:
-    from ..DictInput import DictInput
+    from ..dict_input import DictInput
 
 
 class ObjectField(Field):

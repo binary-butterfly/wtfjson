@@ -7,20 +7,21 @@ Use of this source code is governed by an MIT-style license that can be found in
 """
 
 from typing import Union
+
 from ..fields import Field
 from ..validators import Type
 from ..util import UnsetValue
 
 
-class IntegerField(Field):
+class FloatField(Field):
     pre_validators = [
-        Type(data_type=int)
+        Type(data_type=float)
     ]
 
     @property
-    def data(self) -> Union[int, UnsetValue]:
+    def data(self) -> Union[float, UnsetValue]:
         return super().data
 
     @property
-    def out(self) -> Union[int, UnsetValue]:
+    def out(self) -> Union[float, UnsetValue]:
         return super().out

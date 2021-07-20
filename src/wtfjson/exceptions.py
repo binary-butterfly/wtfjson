@@ -47,7 +47,7 @@ class NotValidated(Exception):
 
 class InvalidData(Exception):
     """
-    will be thrown if somebodu tries to access data which is not there
+    will be thrown if somebody tries to access data which is not there
     """
     pass
 

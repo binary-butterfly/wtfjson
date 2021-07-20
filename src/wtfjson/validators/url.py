@@ -13,9 +13,10 @@ from ..fields import Field
 from ..validators import Regexp
 from ..exceptions import ValidationError
 from ..external import HostnameValidation
+
 if TYPE_CHECKING:
-    from ..DictInput import DictInput
-    from ..ListInput import ListInput
+    from ..dict_input import DictInput
+    from ..list_input import ListInput
 
 
 class URL(Regexp):

@@ -8,7 +8,7 @@ Use of this source code is governed by an MIT-style license that can be found in
 
 from typing import Optional, Any, List, Union
 
-from .Field import FieldState
+from .field import FieldState
 from ..fields import Field, UnboundField
 from ..validators import Type, ListLength
 from ..util import unset_value, UnsetValue

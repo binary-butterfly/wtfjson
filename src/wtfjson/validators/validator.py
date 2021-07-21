@@ -7,13 +7,10 @@ Use of this source code is governed by an MIT-style license that can be found in
 """
 
 from abc import ABC, abstractmethod
-from typing import Optional, Any, Union, TYPE_CHECKING
+from typing import Optional, Any
 
+from ..abstract_input import AbstractInput
 from ..fields import Field
-
-if TYPE_CHECKING:
-    from ..dict_input import DictInput
-    from ..list_input import ListInput
 
 
 class Validator(ABC):
@@ -22,6 +19,6 @@ class Validator(ABC):
     def __init__(self, message: Optional[str] = None):
         self.message = message if message is not None else self.default_message
 
-    @abstractmethod
-    def __call__(self, value: Any, parent: Union['DictInput', 'ListInput'], field: Field) -> None:
+    @abstractmethod  # pragma: nocover
+    def __call__(self, value: Any, parent: AbstractInput, field: Field) -> None:
         pass

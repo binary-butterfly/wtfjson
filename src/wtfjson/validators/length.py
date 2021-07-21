@@ -6,15 +6,12 @@ Copyright (c) 2021, binary butterfly GmbH
 Use of this source code is governed by an MIT-style license that can be found in the LICENSE.txt.
 """
 
-from typing import Any, Optional, Union, TYPE_CHECKING
+from typing import Any, Optional
 
+from ..abstract_input import AbstractInput
 from ..fields import Field
 from ..validators import Validator
 from ..exceptions import ValidationError, InvalidData
-
-if TYPE_CHECKING:
-    from ..dict_input import DictInput
-    from ..list_input import ListInput
 
 
 class Length(Validator):
@@ -29,7 +26,7 @@ class Length(Validator):
         self.min = min
         self.max = max
 
-    def __call__(self, value: Any, form: Union['DictInput', 'ListInput'], field: Field):
+    def __call__(self, value: Any, form: AbstractInput, field: Field):
         if self.min is not None and len(value) < self.min:
             raise ValidationError(self.message)
         if self.max is not None and len(value) > self.max:

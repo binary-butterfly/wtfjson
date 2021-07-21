@@ -7,16 +7,13 @@ Use of this source code is governed by an MIT-style license that can be found in
 """
 
 import re
-from typing import Any, Optional, Union, TYPE_CHECKING
+from typing import Any, Optional
 
+from ..abstract_input import AbstractInput
 from ..fields import Field
 from ..validators import Regexp
 from ..exceptions import ValidationError
 from ..external import HostnameValidation
-
-if TYPE_CHECKING:
-    from ..dict_input import DictInput
-    from ..list_input import ListInput
 
 
 class URL(Regexp):
@@ -33,7 +30,7 @@ class URL(Regexp):
             allow_ip=allow_ip,
         )
 
-    def __call__(self, value: Any, form: Union['DictInput', 'ListInput'], field: Field):
+    def __call__(self, value: Any, form: AbstractInput, field: Field):
         match = super().__call__(value, form, field)
         if not self.validate_hostname(match.group('host')):
             raise ValidationError(self.message)

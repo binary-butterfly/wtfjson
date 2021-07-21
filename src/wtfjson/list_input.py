@@ -7,23 +7,23 @@ Use of this source code is governed by an MIT-style license that can be found in
 """
 
 from typing import Any
-from abc import ABC, abstractmethod
+from abc import abstractmethod
 
-from .exceptions import NotValidated, InvalidData
+from .abstract_input import AbstractInput
 from .util import unset_value
 
 
-class ListInput(ABC):
+class ListInput(AbstractInput):
     _fields: list
-    _errors: dict
-    _validated: bool = False
     _validators: list
 
     def __init__(self, data: Any):
+        super().__init__()
+
         if self.field is unset_value:
             raise Exception('field is required')
+
         # first: init vars
-        self._errors = {}
         self._validators = []
 
         # second: init field
@@ -38,7 +38,7 @@ class ListInput(ABC):
             self._fields.append(field)
 
     @property
-    @abstractmethod
+    @abstractmethod  # pragma: nocover
     def field(self):
         raise NotImplementedError()
 
@@ -52,29 +52,11 @@ class ListInput(ABC):
         return not self.has_errors
 
     @property
-    def has_errors(self) -> bool:
-        if not self._validated:
-            raise NotValidated()
-        return len(self._errors.keys()) > 0
-
-    @property
-    def errors(self) -> dict:
-        if not self._validated:
-            raise NotValidated()
-        return self._errors
-
-    @property
     def data(self):
-        if not self._validated:
-            raise NotValidated()
-        if self.has_errors:
-            raise InvalidData()
+        self._ensure_validated()
         return [field.data for field in self._fields]
 
     @property
     def out(self):
-        if not self._validated:
-            raise NotValidated()
-        if self.has_errors:
-            raise InvalidData()
+        self._ensure_validated()
         return [field.out for field in self._fields if field.out is not unset_value]

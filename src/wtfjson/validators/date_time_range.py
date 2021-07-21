@@ -7,15 +7,12 @@ Use of this source code is governed by an MIT-style license that can be found in
 """
 
 from datetime import datetime, timedelta
-from typing import Any, Optional, Union, TYPE_CHECKING, Callable
+from typing import Any, Optional, Union, Callable
 
+from ..abstract_input import AbstractInput
 from ..fields import Field
 from ..validators import Validator
 from ..exceptions import ValidationError, InvalidData
-
-if TYPE_CHECKING:
-    from ..dict_input import DictInput
-    from ..list_input import ListInput
 
 
 class DateTimeRange(Validator):
@@ -35,7 +32,7 @@ class DateTimeRange(Validator):
         self.plus = plus
         self.orientation = orientation
 
-    def __call__(self, value: Any, form: Union['DictInput', 'ListInput'], field: Field):
+    def __call__(self, value: Any, form: AbstractInput, field: Field):
         if type(value) is not datetime:
             return
         if self.orientation is None:

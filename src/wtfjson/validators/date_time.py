@@ -6,16 +6,12 @@ Copyright (c) 2021, binary butterfly GmbH
 Use of this source code is governed by an MIT-style license that can be found in the LICENSE.txt.
 """
 
-from typing import Union, TYPE_CHECKING
 from datetime import datetime, timezone
 
+from ..abstract_input import AbstractInput
 from ..fields import Field
 from ..validators import Validator
 from ..exceptions import ValidationError
-
-if TYPE_CHECKING:
-    from ..dict_input import DictInput
-    from ..list_input import ListInput
 
 
 class DateTime(Validator):
@@ -26,7 +22,7 @@ class DateTime(Validator):
         self.localized = localized
         self.accept_utc = accept_utc
 
-    def __call__(self, value: str, form: Union['DictInput', 'ListInput'], field: Field):
+    def __call__(self, value: str, form: AbstractInput, field: Field):
         if not self.localized:
             if self.accept_utc and value[-1] == 'Z':
                 value = value[:-1]

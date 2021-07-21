@@ -6,25 +6,23 @@ Copyright (c) 2021, binary butterfly GmbH
 Use of this source code is governed by an MIT-style license that can be found in the LICENSE.txt.
 """
 
-from abc import ABC
 from typing import List, Any, Optional
 
+from .abstract_input import AbstractInput
 from .fields import UnboundField
 from .validators import Validator
-from .exceptions import NotValidated, InvalidData
 from .util import unset_value
 
 
-class DictInput(ABC):
+class DictInput(AbstractInput):
     _fields: dict
-    _errors: dict
-    _validated: bool = False
     _validators: List[Validator]
 
     def __init__(self, data: Any):
+        super().__init__()
+
         # first: init vars
         self._fields = {}
-        self._errors = {}
         self._validators = []
 
         # second: init fields
@@ -49,44 +47,24 @@ class DictInput(ABC):
         return not self.has_errors
 
     def populate_obj(self, obj, exclude: Optional[List[str]] = None):
-        if not self._validated:
-            raise NotValidated()
-        if self.has_errors:
-            raise InvalidData()
+        self._ensure_validated()
         for field_name, field in self._fields.items():
             if exclude is None or field_name not in exclude:
                 if field.out is not unset_value:
                     setattr(obj, field.populate_to if field.populate_to else field_name, field.out)
 
     def to_dataclass(self, dataclass):
+        self._ensure_validated()
         if hasattr(dataclass, 'from_dict'):
             return dataclass.from_dict(**self.out)
         return dataclass(**self.out)
 
     @property
-    def has_errors(self) -> bool:
-        if not self._validated:
-            raise NotValidated()
-        return len(self._errors.keys()) > 0
-
-    @property
-    def errors(self) -> dict:
-        if not self._validated:
-            raise NotValidated()
-        return self._errors
-
-    @property
     def data(self):
-        if not self._validated:
-            raise NotValidated()
-        if self.has_errors:
-            raise InvalidData()
-        return {field_name: field.data for field_name, field in self._fields.items()}  #TODO: get fields back
+        self._ensure_validated()
+        return {field_name: field.data for field_name, field in self._fields.items()}  # TODO: get fields back
 
     @property
     def out(self):
-        if not self._validated:
-            raise NotValidated()
-        if self.has_errors:
-            raise InvalidData()
+        self._ensure_validated()
         return {field_name: field.out for field_name, field in self._fields.items() if field.out is not unset_value}

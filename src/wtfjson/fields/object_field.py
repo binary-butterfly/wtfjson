@@ -6,31 +6,31 @@ Copyright (c) 2021, binary butterfly GmbH
 Use of this source code is governed by an MIT-style license that can be found in the LICENSE.txt.
 """
 
-from typing import Any, Union, TYPE_CHECKING
+from typing import Any, Union, TYPE_CHECKING, Type
 
 from ..fields import Field
-from ..validators import Type
+from ..validators import Type as TypeValidator
 from ..util import unset_value, UnsetValue
 
-if TYPE_CHECKING:
+if TYPE_CHECKING:  # pragma: nocover
     from ..dict_input import DictInput
 
 
 class ObjectField(Field):
     _obj: 'DictInput' = unset_value
     pre_validators = [
-        Type(data_type=dict)
+        TypeValidator(data_type=dict)
     ]
 
-    def __init__(self, form_class: 'DictInput', *args, **kwargs):
+    def __init__(self, input_class: Type['DictInput'], *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.form_class = form_class
+        self.input_class = input_class
 
     def process_in(self, data_raw: Any):
         super().process_in(data_raw)
         if self.validation_stopped:
             return
-        self._obj = self.form_class(data_raw)
+        self._obj = self.input_class(data_raw)
 
     def validate(self) -> bool:
         super().validate()

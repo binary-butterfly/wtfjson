@@ -9,14 +9,12 @@ Use of this source code is governed by an MIT-style license that can be found in
 from abc import ABC
 from enum import Enum
 from copy import deepcopy
-from typing import List, Callable, Optional, Any, TYPE_CHECKING
+from typing import List, Callable, Optional, Any
 
+from ..abstract_input import AbstractInput
 from ..util import unset_value
 from ..exceptions import ValidationError, StopValidation, ClearValidation
 from .unbound_field import UnboundField
-
-if TYPE_CHECKING:
-    import Form
 
 
 class FieldState(Enum):
@@ -28,7 +26,7 @@ class FieldState(Enum):
 
 class Field(ABC):
     state: FieldState
-    _form: 'Form'
+    _form: AbstractInput
     _field_name: str
     data_raw: Any  # raw input data
     data_processed: Any  # data after input filters
@@ -46,7 +44,7 @@ class Field(ABC):
     required: bool
 
     def __init__(self,
-                 form: 'Form' = None,
+                 form: AbstractInput = None,
                  field_name: str = None,
                  description: Optional[str] = None,
                  input_filters: Optional[list] = None,
@@ -100,7 +98,7 @@ class Field(ABC):
         except StopValidation as error:
             self.append_error(error.message)
             self.validation_stopped = True
-        except ClearValidation as no_error:
+        except ClearValidation:
             self._errors = {}
             self.validation_stopped = False
 
@@ -127,7 +125,7 @@ class Field(ABC):
                     self.append_error(error.message)
         except StopValidation as error:
             self.append_error(error.message)
-        except ClearValidation as no_error:
+        except ClearValidation:
             self._errors = {}
         self.state = FieldState.validated
         return not self.has_errors

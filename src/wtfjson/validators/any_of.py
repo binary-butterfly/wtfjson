@@ -6,15 +6,12 @@ Copyright (c) 2021, binary butterfly GmbH
 Use of this source code is governed by an MIT-style license that can be found in the LICENSE.txt.
 """
 
-from typing import Any, Optional, TYPE_CHECKING, Union
+from typing import Any, Optional
 
+from ..abstract_input import AbstractInput
 from ..fields import Field
 from ..validators import Validator
 from ..exceptions import ValidationError
-
-if TYPE_CHECKING:
-    from ..dict_input import DictInput
-    from ..list_input import ListInput
 
 
 class AnyOf(Validator):
@@ -24,6 +21,6 @@ class AnyOf(Validator):
         super().__init__(message)
         self.any_of = any_of
 
-    def __call__(self, value: Any, form: Union['DictInput', 'ListInput'], field: Field):
+    def __call__(self, value: Any, form: AbstractInput, field: Field):
         if value not in self.any_of:
             raise ValidationError(self.message)

@@ -6,15 +6,12 @@ Copyright (c) 2021, binary butterfly GmbH
 Use of this source code is governed by an MIT-style license that can be found in the LICENSE.txt.
 """
 
-from typing import Optional, Any, Union, TYPE_CHECKING
+from typing import Optional, Any
 
+from ..abstract_input import AbstractInput
 from ..fields import Field
 from ..validators import Validator
 from ..exceptions import StopValidation
-
-if TYPE_CHECKING:
-    from ..dict_input import DictInput
-    from ..list_input import ListInput
 
 
 class Type(Validator):
@@ -24,6 +21,6 @@ class Type(Validator):
         super().__init__(message)
         self.data_type = data_type
 
-    def __call__(self, value: Any, form: Union['DictInput', 'ListInput'], field: Field):
+    def __call__(self, value: Any, form: AbstractInput, field: Field):
         if type(value) is not self.data_type:
             raise StopValidation(self.message)

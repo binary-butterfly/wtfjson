@@ -7,15 +7,12 @@ Use of this source code is governed by an MIT-style license that can be found in
 """
 
 import re
-from typing import Any, Optional, Union, Pattern, Match, TYPE_CHECKING
+from typing import Any, Optional, Union, Pattern, Match
 
+from ..abstract_input import AbstractInput
 from ..fields import Field
 from ..validators import Validator
 from ..exceptions import ValidationError
-
-if TYPE_CHECKING:
-    from ..dict_input import DictInput
-    from ..list_input import ListInput
 
 
 class Regexp(Validator):
@@ -26,7 +23,7 @@ class Regexp(Validator):
         super().__init__(message)
         self.rule = rule if type(rule) is Pattern else re.compile(rule, flags)
 
-    def __call__(self, value: Any, form: Union['DictInput', 'ListInput'], field: Field) -> Match:
+    def __call__(self, value: Any, form: AbstractInput, field: Field) -> Match:
         match = self.rule.match(value)
         if match is None:
             raise ValidationError(self.message)

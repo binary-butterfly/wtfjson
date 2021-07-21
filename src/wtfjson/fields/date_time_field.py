@@ -10,7 +10,7 @@ from typing import Union
 from datetime import datetime
 
 from ..fields import Field
-from ..validators import Type, DateTime
+from ..validators import IsType, DateTime
 from ..util import UnsetValue
 
 
@@ -18,7 +18,7 @@ class DateTimeField(Field):
     def __init__(self, localized: bool = False, accept_utc=False, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.pre_validators = [
-            Type(data_type=str),
+            IsType(data_type=str),
             DateTime(localized=localized, accept_utc=accept_utc)
         ]
 

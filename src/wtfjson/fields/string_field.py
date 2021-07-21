@@ -9,13 +9,13 @@ Use of this source code is governed by an MIT-style license that can be found in
 from typing import Union
 
 from ..fields import Field
-from ..validators import Type
+from ..validators import IsType
 from ..util import UnsetValue
 
 
 class StringField(Field):
     pre_validators = [
-        Type(data_type=str)
+        IsType(data_type=str)
     ]
 
     @property

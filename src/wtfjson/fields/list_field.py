@@ -10,7 +10,7 @@ from typing import Optional, Any, List, Union
 
 from .field import FieldState
 from ..fields import Field, UnboundField
-from ..validators import Type, ListLength
+from ..validators import IsType, ListLength
 from ..util import unset_value, UnsetValue
 
 
@@ -27,7 +27,7 @@ class ListField(Field):
         assert min_entries >= 0
         assert max_entries is None or max_entries >= min_entries
         self.pre_validators = [
-            Type(data_type=list),
+            IsType(data_type=list),
             ListLength(min_entries, max_entries)
         ]
         self.unbound_field = unbound_field

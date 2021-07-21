@@ -7,10 +7,10 @@ Use of this source code is governed by an MIT-style license that can be found in
 """
 
 from ..fields import Field
-from ..validators import Type
+from ..validators import IsType
 
 
 class BooleanField(Field):
     pre_validators = [
-        Type(data_type=bool)
+        IsType(data_type=bool)
     ]

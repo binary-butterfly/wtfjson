@@ -10,13 +10,13 @@ from typing import Union
 from decimal import Decimal
 
 from ..fields import Field
-from ..validators import Type, DecimalValidator
+from ..validators import IsType, DecimalValidator
 from ..util import UnsetValue
 
 
 class DecimalField(Field):
     pre_validators = [
-        Type(data_type=str),
+        IsType(data_type=str),
         DecimalValidator()
     ]
 

@@ -7,7 +7,7 @@ Use of this source code is governed by an MIT-style license that can be found in
 """
 
 from .validator import Validator
-from .type import Type
+from .type import IsType, Type
 from .enum_validator import EnumValidator
 from .decimal_validator import DecimalValidator
 from .list_length import ListLength

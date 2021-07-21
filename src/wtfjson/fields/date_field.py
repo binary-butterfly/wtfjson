@@ -10,13 +10,13 @@ from typing import Union
 from datetime import date
 
 from ..fields import Field
-from ..validators import Type, Date
+from ..validators import IsType, Date
 from ..util import UnsetValue
 
 
 class DateField(Field):
     pre_validators = [
-        Type(data_type=str),
+        IsType(data_type=str),
         Date()
     ]
 

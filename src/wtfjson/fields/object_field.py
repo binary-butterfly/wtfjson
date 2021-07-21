@@ -9,7 +9,7 @@ Use of this source code is governed by an MIT-style license that can be found in
 from typing import Any, Union, TYPE_CHECKING, Type
 
 from ..fields import Field
-from ..validators import Type as TypeValidator
+from ..validators import IsType
 from ..util import unset_value, UnsetValue
 
 if TYPE_CHECKING:  # pragma: nocover
@@ -19,7 +19,7 @@ if TYPE_CHECKING:  # pragma: nocover
 class ObjectField(Field):
     _obj: 'DictInput' = unset_value
     pre_validators = [
-        TypeValidator(data_type=dict)
+        IsType(data_type=dict)
     ]
 
     def __init__(self, input_class: Type['DictInput'], *args, **kwargs):

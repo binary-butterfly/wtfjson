@@ -10,7 +10,7 @@ from enum import Enum
 from typing import Union
 
 from ..fields import Field
-from ..validators import Type, EnumValidator
+from ..validators import IsType, EnumValidator
 from ..util import UnsetValue
 
 
@@ -20,7 +20,7 @@ class EnumField(Field):
         super().__init__(*args, **kwargs)
         self.enum = enum
         self.default_validators = [
-            Type(data_type=str),
+            IsType(data_type=str),
             EnumValidator(enum=enum)
         ]
 

@@ -8,4 +8,3 @@ Use of this source code is governed by an MIT-style license that can be found in
 
 from .dict_input import DictInput
 from .list_input import ListInput
-

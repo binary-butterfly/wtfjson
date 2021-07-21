@@ -25,5 +25,3 @@ class Validator(ABC):
     @abstractmethod
     def __call__(self, value: Any, parent: Union['DictInput', 'ListInput'], field: Field) -> None:
         pass
-
-

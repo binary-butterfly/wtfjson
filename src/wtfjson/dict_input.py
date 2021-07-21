@@ -90,4 +90,3 @@ class DictInput(ABC):
         if self.has_errors:
             raise InvalidData()
         return {field_name: field.out for field_name, field in self._fields.items() if field.out is not unset_value}
-

@@ -9,6 +9,9 @@ all: tox
 tox:
 	tox
 
+flake8:
+	tox -e flake8
+
 # Open HTML coverage report in browser
 open-coverage:
 	$(or $(BROWSER),firefox) ./reports/coverage_html/index.html

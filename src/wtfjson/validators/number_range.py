@@ -34,4 +34,3 @@ class NumberRange(Validator):
             raise ValidationError(self.message)
         if self.max is not None and value > self.max:
             raise ValidationError(self.message)
-

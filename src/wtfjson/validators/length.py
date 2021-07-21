@@ -34,4 +34,3 @@ class Length(Validator):
             raise ValidationError(self.message)
         if self.max is not None and len(value) > self.max:
             raise ValidationError(self.message)
-

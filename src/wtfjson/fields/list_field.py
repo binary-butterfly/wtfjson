@@ -35,7 +35,7 @@ class ListField(Field):
     def process_in(self, data_raw: Any):
         super().process_in(data_raw)
         if self.validation_stopped:
-            return 
+            return
         self.entries = []
         for item in self.data_processed:
             entry = self.unbound_field.bind(self._form, '%s.%s' % (self._field_name, len(self.entries)))

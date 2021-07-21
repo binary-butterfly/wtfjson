@@ -20,7 +20,7 @@ class ObjectDictInput(DictInput):
     test_field = ObjectField(SubObjectDictInput)
 
 
-class ObjectTest(TestCase):
+class ObjectFieldTest(TestCase):
     def test_success(self):
         form = ObjectDictInput(data={'test_field': {'test_field_string': 'lecker', 'test_field_int': 10}})
         assert form.validate() is True

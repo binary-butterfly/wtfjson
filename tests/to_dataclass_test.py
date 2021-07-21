@@ -32,7 +32,7 @@ class TestClassFrom:
     test_field: str
 
 
-class BooleanTest(TestCase):
+class ToDataclassTest(TestCase):
     def test_success(self):
         form = PopulateDictInput(data={'test_field': 'cookie'})
         assert form.validate() is True

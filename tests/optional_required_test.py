@@ -21,7 +21,7 @@ class OptionalDictInput(DictInput):
     )
 
 
-class OptionalDictListInput(DictInput):
+class OptionalListDictInput(DictInput):
     test_field = ListField(
         StringField(
             validators=[
@@ -49,21 +49,21 @@ class OptionalRequiredTest(TestCase):
         assert form.out == {}
 
     def test_optional_list(self):
-        form = OptionalDictListInput(data={})
+        form = OptionalListDictInput(data={})
         assert form.validate() is True
         assert form.has_errors is False
         assert form.errors == {}
         assert form.out == {}
 
     def test_optional_list_empty_data(self):
-        form = OptionalDictListInput(data={'test_field': []})
+        form = OptionalListDictInput(data={'test_field': []})
         assert form.validate() is True
         assert form.has_errors is False
         assert form.errors == {}
         assert form.out == {'test_field': []}
 
     def test_optional_list_data(self):
-        form = OptionalDictListInput(data={'test_field': ['cookie', 'cupcake']})
+        form = OptionalListDictInput(data={'test_field': ['cookie', 'cupcake']})
         assert form.validate() is True
         assert form.has_errors is False
         assert form.errors == {}

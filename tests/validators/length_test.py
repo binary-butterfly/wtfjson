@@ -20,7 +20,7 @@ class LengthDictInput(DictInput):
     )
 
 
-class AnyOfValidatorTest(TestCase):
+class LengthTest(TestCase):
     def test_success_min(self):
         form = LengthDictInput(data={'test_field': 'cookie'})
         assert form.validate() is True

@@ -20,7 +20,7 @@ class EnumDictInput(DictInput):
     )
 
 
-class EmailValidatorTest(TestCase):
+class EmailTest(TestCase):
     def test_success(self):
         form = EnumDictInput(data={'test_field': 'mail@binary-butterfly.de'})
         assert form.validate() is True

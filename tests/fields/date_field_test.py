@@ -16,7 +16,7 @@ class DateDictInput(DictInput):
     test_field = DateField()
 
 
-class DateTest(TestCase):
+class DateFieldTest(TestCase):
     def test_success(self):
         form = DateDictInput(data={'test_field': '2020-10-01'})
         assert form.validate() is True

@@ -36,7 +36,7 @@ class URLNoTldDictInput(DictInput):
     )
 
 
-class URLValidatorTest(TestCase):
+class URLTest(TestCase):
     def test_success(self):
         form = URLDictInput(data={'test_field': 'https://binary-butterfly.de'})
         assert form.validate() is True

@@ -21,7 +21,7 @@ class EnumDictInput(DictInput):
     test_field = EnumField(TestEnum)
 
 
-class EnumTest(TestCase):
+class EnumFieldTest(TestCase):
     def test_success(self):
         form = EnumDictInput(data={'test_field': 'apple'})
         assert form.validate() is True

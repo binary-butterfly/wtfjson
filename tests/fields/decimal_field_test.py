@@ -12,26 +12,26 @@ from wtfjson import DictInput
 from wtfjson.fields import DecimalField
 
 
-class EnumDictInput(DictInput):
+class DecimalDictInput(DictInput):
     test_field = DecimalField()
 
 
-class EnumTest(TestCase):
+class DecimalFieldTest(TestCase):
     def test_success(self):
-        form = EnumDictInput(data={'test_field': '1.3'})
+        form = DecimalDictInput(data={'test_field': '1.3'})
         assert form.validate() is True
         assert form.has_errors is False
         assert form.errors == {}
         assert form.out == {'test_field': Decimal('1.3')}
 
     def test_char_string_input(self):
-        form = EnumDictInput(data={'test_field': 'cookie'})
+        form = DecimalDictInput(data={'test_field': 'cookie'})
         assert form.validate() is False
         assert form.has_errors is True
         assert form.errors == {'test_field': ['invalid decimal']}
 
     def test_float_input(self):
-        form = EnumDictInput(data={'test_field': 1.3})
+        form = DecimalDictInput(data={'test_field': 1.3})
         assert form.validate() is False
         assert form.has_errors is True
         assert form.errors == {'test_field': ['invalid type']}

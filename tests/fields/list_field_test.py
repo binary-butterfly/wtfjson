@@ -7,7 +7,7 @@ Use of this source code is governed by an MIT-style license that can be found in
 """
 
 from unittest import TestCase
-from wtfjson import DictInput, ListInput
+from wtfjson import DictInput
 from wtfjson.fields import StringField, ListField
 
 
@@ -19,7 +19,7 @@ class ListInListDictInput(DictInput):
     test_field = ListField(ListField(StringField()))
 
 
-class ListTest(TestCase):
+class ListFieldTest(TestCase):
     def test_success(self):
         form = StringListDictInput(data={'test_field': ['keks', 'lecker']})
         assert form.validate() is True

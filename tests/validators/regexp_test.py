@@ -30,7 +30,7 @@ class RegexpStringDictInput(DictInput):
     )
 
 
-class RegexpValidatorTest(TestCase):
+class RegexpTest(TestCase):
     def test_success_pattern(self):
         form = RegexpPatternDictInput(data={'test_field': '1cookie'})
         assert form.validate() is True

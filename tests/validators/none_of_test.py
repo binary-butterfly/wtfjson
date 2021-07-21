@@ -9,33 +9,33 @@ Use of this source code is governed by an MIT-style license that can be found in
 from unittest import TestCase
 from wtfjson import DictInput
 from wtfjson.fields import StringField
-from wtfjson.validators import AnyOf
+from wtfjson.validators import NoneOf
 
 
-class EnumDictInput(DictInput):
+class NoneOfStringDictInput(DictInput):
     test_field = StringField(
         validators=[
-            AnyOf(['cookie', 'vanilla'])
+            NoneOf(['cookie'])
         ]
     )
 
 
-class AnyOfValidatorTest(TestCase):
+class NoneOfTest(TestCase):
     def test_success(self):
-        form = EnumDictInput(data={'test_field': 'cookie'})
+        form = NoneOfStringDictInput(data={'test_field': 'chocolate'})
         assert form.validate() is True
         assert form.has_errors is False
         assert form.errors == {}
-        assert form.out == {'test_field': 'cookie'}
+        assert form.out == {'test_field': 'chocolate'}
 
     def test_invalid_type(self):
-        form = EnumDictInput(data={'test_field': 12})
+        form = NoneOfStringDictInput(data={'test_field': 12})
         assert form.validate() is False
         assert form.has_errors is True
         assert form.errors == {'test_field': ['invalid type']}
 
     def test_invalid_value(self):
-        form = EnumDictInput(data={'test_field': 'chocolate'})
+        form = NoneOfStringDictInput(data={'test_field': 'cookie'})
         assert form.validate() is False
         assert form.has_errors is True
-        assert form.errors == {'test_field': ['is not in any-of list']}
+        assert form.errors == {'test_field': ['is in none-of list']}

@@ -34,6 +34,6 @@ class UnboundFieldTest(TestCase):
         assert type(form.field) is StringField
 
     def test_list_input(self):
-        assert type(TestDictInput.field) is UnboundField
+        assert type(StringListInput.field) is UnboundField
         form = StringListInput(['string'])
         assert type(form._fields[0]) is StringField

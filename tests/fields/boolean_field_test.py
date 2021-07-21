@@ -15,8 +15,15 @@ class BooleanDictInput(DictInput):
     test_field = BooleanField()
 
 
-class BooleanTest(TestCase):
-    def test_success(self):
+class BooleanFieldTest(TestCase):
+    def test_valid_true(self):
+        form = BooleanDictInput(data={'test_field': True})
+        assert form.validate() is True
+        assert form.has_errors is False
+        assert form.errors == {}
+        assert form.out == {'test_field': True}
+
+    def test_valid_false(self):
         form = BooleanDictInput(data={'test_field': False})
         assert form.validate() is True
         assert form.has_errors is False

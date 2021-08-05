@@ -26,5 +26,5 @@ class ListLength(Validator):
         self.max_entries = max_entries
 
     def __call__(self, value: Any, form: AbstractInput, field: Field):
-        if len(value) < self.min_entries or (self.max_entries is not None and len(field.data) < self.max_entries):
+        if len(value) < self.min_entries or (self.max_entries is not None and len(value) > self.max_entries):
             raise ValidationError(self.message)

@@ -23,7 +23,7 @@ class EnumDictInput(DictInput):
 
 class EnumFieldTest(TestCase):
     def test_success(self):
-        form = EnumDictInput(data={'test_field': 'apple'})
+        form = EnumDictInput(data={'test_field': 'juicy apple'})
         assert form.validate() is True
         assert form.has_errors is False
         assert form.errors == {}

@@ -31,7 +31,7 @@ def read(*names, **kwargs):
 
 setup(
     name='wtfjson',
-    version='0.2.0',
+    version='0.3.1',
     license='MIT',
     description='',
     author='binary butterfly GmbH',

@@ -39,7 +39,7 @@ class DictInput(ABC):
         # third: load data
         for field_name, field in self._fields.items():
             if field_name in data:
-                if remove_none:
+                if remove_none and data[field_name] is None:
                     continue
                 field.process_in(data[field_name], remove_none)
 

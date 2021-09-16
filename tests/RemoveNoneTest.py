@@ -13,15 +13,16 @@ from wtfjson.fields import StringField
 
 class RemoveNoneDictInput(DictInput):
     test_field = StringField(required=False)
+    keep_field = StringField(required=False)
 
 
 class RemoveNoneTest(TestCase):
     def test_success(self):
-        form = RemoveNoneDictInput(data={'test_field': None}, remove_none=True)
+        form = RemoveNoneDictInput(data={'test_field': None, 'keep_field': 'test'}, remove_none=True)
         assert form.validate() is True
         assert form.has_errors is False
         assert form.errors == {}
-        assert form.out == {}
+        assert form.out == {'keep_field': 'test'}
 
     def test_invalid(self):
         form = RemoveNoneDictInput(data={'test_field': None})

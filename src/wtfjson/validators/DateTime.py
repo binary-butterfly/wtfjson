@@ -32,7 +32,7 @@ class DateTime(Validator):
                 value = value[:-1]
             if '.' in value:
                 value = value.split('.')[0]
-            if len(value) not in 19:
+            if len(value) != 19:
                 raise ValidationError(self.default_message)
             try:
                 field.data_processed = datetime.fromisoformat(value)

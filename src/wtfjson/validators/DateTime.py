@@ -30,7 +30,9 @@ class DateTime(Validator):
         if not self.localized:
             if self.accept_utc and value[-1] == 'Z':
                 value = value[:-1]
-            if len(value) != 19:
+            if '.' in value:
+                value = value.split('.')[0]
+            if len(value) not in 19:
                 raise ValidationError(self.default_message)
             try:
                 field.data_processed = datetime.fromisoformat(value)

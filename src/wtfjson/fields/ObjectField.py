@@ -25,7 +25,7 @@ class ObjectField(Field):
         self.form_class = form_class
 
     def process_in(self, data_raw: Any, remove_none: bool = False):
-        super().process_in(data_raw)
+        super().process_in(data_raw, remove_none)
         if self.validation_stopped:
             return
         self._obj = self.form_class(data_raw, remove_none)

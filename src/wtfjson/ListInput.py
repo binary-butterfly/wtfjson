@@ -20,7 +20,7 @@ class ListInput(ABC):
     _validated: bool = False
     _validators: list
 
-    def __init__(self, data: Any):
+    def __init__(self, data: Any, remove_none: bool = False):
         if self.field is unset_value:
             raise Exception('field is required')
         # first: init vars
@@ -35,7 +35,7 @@ class ListInput(ABC):
         self._fields = []
         for i in range(0, len(data)):
             field = self.field.bind(self, str(i))
-            field.process_in(data[i])
+            field.process_in(data[i], remove_none)
             self._fields.append(field)
 
     @property

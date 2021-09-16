@@ -33,7 +33,7 @@ class ListField(Field):
         self.unbound_field = unbound_field
 
     def process_in(self, data_raw: Any, remove_none: bool = False):
-        super().process_in(data_raw)
+        super().process_in(data_raw, remove_none)
         if self.validation_stopped:
             return 
         self.entries = []

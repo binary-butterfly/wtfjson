@@ -17,7 +17,7 @@ class ListInput(AbstractInput):
     _fields: list
     _validators: list
 
-    def __init__(self, data: Any):
+    def __init__(self, data: Any, remove_none: bool = False):
         super().__init__()
 
         if self.field is unset_value:
@@ -34,7 +34,7 @@ class ListInput(AbstractInput):
         self._fields = []
         for i in range(0, len(data)):
             field = self.field.bind(self, str(i))
-            field.process_in(data[i])
+            field.process_in(data[i], remove_none)
             self._fields.append(field)
 
     @property

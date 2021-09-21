@@ -18,7 +18,7 @@ class DictInput(AbstractInput):
     _fields: dict
     _validators: List[Validator]
 
-    def __init__(self, data: Any):
+    def __init__(self, data: Any, remove_none: bool = False):
         super().__init__()
 
         # first: init vars
@@ -37,7 +37,9 @@ class DictInput(AbstractInput):
         # third: load data
         for field_name, field in self._fields.items():
             if field_name in data:
-                field.process_in(data[field_name])
+                if remove_none and data[field_name] is None:
+                    continue
+                field.process_in(data[field_name], remove_none)
 
     def validate(self) -> bool:
         for field_name, field in self._fields.items():

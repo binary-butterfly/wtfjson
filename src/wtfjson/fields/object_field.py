@@ -26,11 +26,11 @@ class ObjectField(Field):
         super().__init__(*args, **kwargs)
         self.input_class = input_class
 
-    def process_in(self, data_raw: Any):
-        super().process_in(data_raw)
+    def process_in(self, data_raw: Any, remove_none: bool = False):
+        super().process_in(data_raw, remove_none)
         if self.validation_stopped:
             return
-        self._obj = self.input_class(data_raw)
+        self._obj = self.input_class(data_raw, remove_none)
 
     def validate(self) -> bool:
         super().validate()
